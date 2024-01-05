@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.2
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.1...v0.1.2)
+
+### 🩹 Fixes
+
+- 修复 composeable api 无类型 ([6f9750e](https://github.com/roshan-labs/auth/commit/6f9750e))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.1
 
 
