@@ -1,14 +1,21 @@
+import { type ComputedRef, computed, watch } from 'vue'
+
 import { useCommonAuthState } from '../use-common-auth-state'
 import { useTypedConfig } from '../../utils/helper'
 import type { SessionData } from '#auth'
-import { computed, useCookie, useRuntimeConfig, useState, watch } from '#imports'
+import { useCookie, useRuntimeConfig, useState } from '#imports'
 
-export const useAuthState = () => {
+type UseAuthStateReturn = {
+  token: ComputedRef<string | null>
+  setToken: (value: string | null) => void
+  clearToken: () => void
+} & ReturnType<typeof useCommonAuthState<SessionData>>
+
+export const useAuthState = (): UseAuthStateReturn => {
   const config = useTypedConfig(useRuntimeConfig(), 'local')
 
   const commonAuthState = useCommonAuthState<SessionData>()
 
-  /** token cookie */
   const _tokenCookie = useCookie<string | null>('auth:token', {
     default: () => null,
     maxAge: config.token.maxAgeInSeconds,

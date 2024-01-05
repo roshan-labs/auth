@@ -134,7 +134,14 @@ const signOut: SignOut<any> = async (signOutOptions = {}, fetchOptions) => {
   return response
 }
 
-export const useAuth = () => {
+type UseAuthReturn = {
+  getSession: typeof getSession
+  signIn: typeof signIn
+  signUp: typeof signUp
+  signOut: typeof signOut
+} & ReturnType<typeof useAuthState>
+
+export const useAuth = (): UseAuthReturn => {
   const authState = useAuthState()
 
   return {

@@ -1,8 +1,16 @@
+import { type ComputedRef, computed, watch } from 'vue'
+
 import { useTypedConfig } from '../../utils/helper'
 import { useAuthState as useLocalAuthState } from '../local/use-auth-state'
-import { computed, useCookie, useRuntimeConfig, useState, watch } from '#imports'
+import { useCookie, useRuntimeConfig, useState } from '#imports'
 
-export const useAuthState = () => {
+type UseAuthStateReturn = {
+  refreshToken: ComputedRef<string | null>
+  setRefreshToken: (value: string | null) => void
+  clearRefreshToken: () => void
+} & ReturnType<typeof useLocalAuthState>
+
+export const useAuthState = (): UseAuthStateReturn => {
   const localAuthState = useLocalAuthState()
 
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
@@ -21,7 +29,7 @@ export const useAuthState = () => {
     _refreshTokenCookie.value = value
   })
 
-  const setRefreshToken = (value: string) => {
+  const setRefreshToken = (value: string | null) => {
     rawRefreshToken.value = value
   }
 

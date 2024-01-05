@@ -1,12 +1,21 @@
+import type { Ref } from 'vue'
+
 import type { SessionStatus } from '../types'
 import { computed, useState } from '#imports'
+
+type UseCommonAuthStateReturn<T> = {
+  loading: Ref<boolean>
+  data: Ref<T | null>
+  lastRefreshedAt: Ref<Date | null>
+  status: Ref<SessionStatus>
+}
 
 /**
  * 公共 auth 状态方法
  *
  * @returns auth 相关状态变量与方法
  */
-export const useCommonAuthState = <T>() => {
+export const useCommonAuthState = <T>(): UseCommonAuthStateReturn<T> => {
   /** 登录用户数据 */
   const data = useState<T | null>('auth:data', () => null)
 

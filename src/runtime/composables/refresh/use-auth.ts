@@ -112,7 +112,7 @@ const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
 /**
  * 刷新 token
  */
-export const refresh: Refresh<Record<string, any>> = async (credentials, fetchOptions) => {
+const refresh: Refresh<Record<string, any>> = async (credentials, fetchOptions) => {
   // 1. 获取 refresh 请求配置
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
   const { path, method } = config.endpoints.refresh
@@ -159,13 +159,19 @@ export const refresh: Refresh<Record<string, any>> = async (credentials, fetchOp
     }
   }
 
+  // 5. 设置新 token 并更新时间
   setToken(expectedToken)
 
   await getSession()
   lastRefreshedAt.value = new Date()
 }
 
-export const useAuth = () => {
+type UseAuthReturn = ReturnType<typeof useAuthState> &
+  ReturnType<typeof useLocalAuth> & {
+    refresh: typeof refresh
+  }
+
+export const useAuth = (): UseAuthReturn => {
   const state = useAuthState()
   const localAuth = useLocalAuth()
 
@@ -175,5 +181,6 @@ export const useAuth = () => {
   return {
     ...localAuth,
     ...state,
+    refresh,
   }
 }

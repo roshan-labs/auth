@@ -1,4 +1,5 @@
 import type { RouterMethod } from 'h3'
+import type { $Fetch } from 'nitropack'
 import type { TypeObject } from 'knitwork'
 
 /**
@@ -269,7 +270,7 @@ export type GetSession<R> = (getSessionOptions?: GetSessionOptions) => Promise<R
 
 export type SessionStatus = 'unauthenticated' | 'loading' | 'authenticated'
 
-type FetchOptions = Parameters<typeof $fetch>[1]
+export type FetchOptions = Parameters<$Fetch>[1]
 
 type SignOptions = {
   /**

@@ -1,8 +1,14 @@
+import type { ComputedRef } from 'vue'
+
 import { jsonPointerGet } from '../utils/helper'
 import { useLogger } from './use-logger'
 import { computed, useAuth } from '#imports'
 
-export const usePermission = () => {
+type UsePermissionReturn = {
+  permissions: ComputedRef<string[]>
+}
+
+export const usePermission = (): UsePermissionReturn => {
   const { data } = useAuth()
   const { permissionPointer } = useRuntimeConfig().public.auth.provider.permission
 

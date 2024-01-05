@@ -2,6 +2,7 @@ import type { RouterMethod } from 'h3'
 import { joinURL } from 'ufo'
 import { defu } from 'defu'
 
+import type { FetchOptions } from '../types'
 import { useLogger } from './use-logger'
 import { useHttp, useRuntimeConfig } from '#imports'
 
@@ -18,7 +19,7 @@ export const useAuthFetch = <R = any>(
   path: string,
   params: Record<string, any> | undefined,
   method: RouterMethod,
-  options?: Parameters<typeof $fetch>[1]
+  options?: FetchOptions
 ): Promise<R> => {
   const baseURL = useRuntimeConfig().public.auth.params.fullBaseURL
   const url = joinURL(baseURL, path)
