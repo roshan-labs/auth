@@ -1,5 +1,6 @@
 {
   "name": "@roshan-labs/auth",
+  "version": "0.1.0",
   "description": "Nuxt3 auth module",
   "repository": "https://github.com/roshan-labs/auth",
   "license": "MIT",
@@ -21,7 +22,7 @@
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground && nuxi prepare playground-refresh",
-    "release": "npm run prepack && changelogen --bump",
+    "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest watch"
