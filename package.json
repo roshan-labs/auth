@@ -28,10 +28,10 @@
   ],
   "scripts": {
     "prepack": "nuxt-module-build build",
-    "dev:local": "nuxi dev playground",
+    "dev:local": "nuxi dev playground-local",
     "dev:refresh": "nuxi dev playground-refresh",
     "dev:build": "nuxi build playground",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground && nuxi prepare playground-refresh",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground-local && nuxi prepare playground-refresh",
     "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",

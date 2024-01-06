@@ -128,7 +128,7 @@ const signOut: SignOut<any> = async (signOutOptions = {}, fetchOptions) => {
   const { redirect = true, callbackUrl, external } = signOutOptions
 
   if (redirect) {
-    await navigateTo(callbackUrl ?? '/', { external })
+    await navigateTo(callbackUrl ?? config.pages.login, { external })
   }
 
   return response

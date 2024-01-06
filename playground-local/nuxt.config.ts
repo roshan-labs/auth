@@ -10,7 +10,6 @@ export default defineNuxtConfig({
       type: 'local',
       endpoints: {
         signIn: { path: '/login', method: 'post' },
-        signOut: false,
         getSession: { path: '/user', method: 'get' },
       },
       pages: {
@@ -19,6 +18,9 @@ export default defineNuxtConfig({
       permission: {
         isEnabled: true,
         permissionPointer: '/permission',
+      },
+      token: {
+        // maxAgeInSeconds: 60,
       },
     },
     globalAppMiddleware: true,

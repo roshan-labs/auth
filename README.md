@@ -41,6 +41,10 @@ export default defineNuxtConfig({
 })
 ```
 
+## 许可
+
+[MIT](/LICENSE)
+
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/@roshan-labs/auth/latest.svg?style=flat&colorA=18181B&colorB=28CF8D
 [npm-version-href]: https://npmjs.com/package/@roshan-labs/auth
