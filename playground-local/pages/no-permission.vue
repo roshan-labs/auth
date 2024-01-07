@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 definePageMeta({
   auth: {
-    permission: [''],
+    permission: ['page:no-permission'],
   },
 })
 </script>

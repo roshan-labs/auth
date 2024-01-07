@@ -19,9 +19,6 @@ export default defineNuxtConfig({
         isEnabled: true,
         permissionPointer: '/permission',
       },
-      token: {
-        // maxAgeInSeconds: 60,
-      },
     },
     globalAppMiddleware: true,
   },
