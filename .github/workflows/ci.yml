@@ -25,4 +25,4 @@ jobs:
           cache: 'pnpm'
 
       - name: 📦️ Install dependencies
-        run: pnpm install --forzen-lockfile
+        run: pnpm install --frozen-lockfile
