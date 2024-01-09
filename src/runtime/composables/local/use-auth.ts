@@ -108,11 +108,12 @@ const signUp: SignUp<Credentials, any> = async (credentials, signUpOptions = {},
  */
 const signOut: SignOut<any> = async (signOutOptions = {}, fetchOptions) => {
   const config = useTypedConfig(useRuntimeConfig(), 'local')
-  const { data, token, clearToken } = useAuthState()
+  const { data, token, lastRefreshedAt, clearToken } = useAuthState()
   const headers = new Headers(token.value ? { [config.token.headerName]: token.value } : undefined)
 
   // 清理登录用户信息
   data.value = null
+  lastRefreshedAt.value = null
   clearToken()
 
   const signOutConfig = config.endpoints.signOut

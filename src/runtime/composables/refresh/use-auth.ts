@@ -81,7 +81,7 @@ const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
   // 1. 获取 signOut endpoint 配置
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
   const signOutConfig = config.endpoints.signOut
-  const { token, data, clearToken, clearRefreshToken } = useAuthState()
+  const { token, data, lastRefreshedAt, clearToken, clearRefreshToken } = useAuthState()
   let response
 
   // 2. 发起 signOut 请求
@@ -96,6 +96,7 @@ const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
 
   // 3. 清理 token, refreshToken, session
   data.value = null
+  lastRefreshedAt.value = null
   clearToken()
   clearRefreshToken()
 
