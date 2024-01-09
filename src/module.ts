@@ -81,7 +81,7 @@ const defaultProvider: {
       headerName: 'Authorization',
       type: 'Bearer',
       maxAgeInSeconds: 5 * 60,
-      sameSiteAttribute: 'none',
+      sameSiteAttribute: 'lax',
     },
     refreshOnlyToken: true,
     refreshToken: {
@@ -90,7 +90,7 @@ const defaultProvider: {
     },
     sessionData: {
       type: { id: 'string | number' },
-      sessionPointer: '/',
+      sessionPointer: '',
     },
     permission: {
       isEnabled: false,

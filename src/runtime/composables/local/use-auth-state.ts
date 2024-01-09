@@ -20,6 +20,7 @@ export const useAuthState = (): UseAuthStateReturn => {
     default: () => null,
     maxAge: config.token.maxAgeInSeconds,
     sameSite: config.token.sameSiteAttribute,
+    secure: config.token.sameSiteAttribute === 'none',
   })
 
   // useCookie 的更新机制会延迟

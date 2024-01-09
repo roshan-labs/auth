@@ -103,7 +103,7 @@ const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
   const { redirect = true, callbackUrl, external } = signOutOptions
 
   if (redirect) {
-    await navigateTo(callbackUrl ?? '/', { external })
+    await navigateTo(callbackUrl ?? config.pages.login, { external })
   }
 
   return response
@@ -172,11 +172,12 @@ type UseAuthReturn = ReturnType<typeof useAuthState> &
   }
 
 export const useAuth = (): UseAuthReturn => {
-  const state = useAuthState()
   const localAuth = useLocalAuth()
 
   localAuth.signIn = signIn
   localAuth.signOut = signOut
+
+  const state = useAuthState()
 
   return {
     ...localAuth,

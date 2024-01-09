@@ -2,6 +2,8 @@ import { verify } from 'jsonwebtoken'
 
 import { SECRET } from './login.post'
 
+const TOKEN_TYPE = 'Bearer'
+
 export default defineEventHandler((event) => {
   const authorization = getRequestHeader(event, 'Authorization')
 
@@ -12,14 +14,14 @@ export default defineEventHandler((event) => {
     })
   }
 
-  const [, token] = authorization.split('Bearer ')
+  const [, token] = authorization.split(`${TOKEN_TYPE} `)
 
   try {
     const user = verify(token, SECRET)
 
     return {
       user,
-      permission: ['page:home', 'page:about', 'add', 'edit'],
+      permissions: ['page:home', 'add', 'edit'],
     }
   } catch (error) {
     throw createError({

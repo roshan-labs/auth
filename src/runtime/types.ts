@@ -155,7 +155,7 @@ type ProviderLocal = {
     /**
      * 根据 JSON pointer 规则获取 session data
      *
-     * @default '/'
+     * @default ''
      */
     sessionPointer?: string
   }
@@ -205,8 +205,8 @@ type ProviderRefresh = Omit<ProviderLocal, 'type'> & {
    *
    * @default true
    */
-  refreshOnlyToken?: true
-  refreshToken: {
+  refreshOnlyToken?: boolean
+  refreshToken?: {
     /**
      * 根据 JSON pointer 规则获取 refreshToken 的路径
      *

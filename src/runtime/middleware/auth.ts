@@ -31,7 +31,7 @@ declare module '#app' {
   }
 }
 
-export default defineNuxtRouteMiddleware((to) => {
+export default defineNuxtRouteMiddleware((to, from) => {
   // 1. 获取 auth meta 配置并设置默认值
   const authMeta = to.meta.auth
 
@@ -88,10 +88,13 @@ export default defineNuxtRouteMiddleware((to) => {
     }
   }
 
-  // 6. 不符合条件的用户最终导航配置
+  // 6. 不符合上述条件的最终处理方式
   if (typeof authMeta === 'object' && authMeta.navigateUnauthenticatedTo) {
     return navigateTo(authMeta.navigateUnauthenticatedTo)
   } else {
-    return navigateTo(authConfig.provider.pages.login)
+    // 需要考虑 from 与 login 路径相同的情况，会造成死循环
+    return from.path === authConfig.provider.pages.login
+      ? undefined
+      : navigateTo(authConfig.provider.pages.login)
   }
 })
