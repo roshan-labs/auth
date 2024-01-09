@@ -26,3 +26,6 @@ jobs:
 
       - name: 📦️ Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: 🚧 Setup project
+        run: pnpm dev:prepare
