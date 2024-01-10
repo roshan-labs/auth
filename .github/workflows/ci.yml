@@ -29,3 +29,12 @@ jobs:
 
       - name: 🚧 Setup project
         run: pnpm dev:prepare
+
+      - name: 🚨 Lint code
+        run: pnpm lint
+
+      - name: 🔧 Test build module
+        run: pnpm prepack
+
+      - name: 🧪 Test project
+        run: pnpm test
