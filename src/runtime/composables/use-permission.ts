@@ -2,7 +2,7 @@ import type { ComputedRef } from 'vue'
 
 import { jsonPointerGet } from '../utils/helper'
 import { useLogger } from './use-logger'
-import { computed, useAuth } from '#imports'
+import { computed, useAuth, useRuntimeConfig } from '#imports'
 
 type UsePermissionReturn = {
   permissions: ComputedRef<string[]>
