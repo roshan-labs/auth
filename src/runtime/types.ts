@@ -2,7 +2,8 @@ import type { RouterMethod } from 'h3'
 import type { $Fetch } from 'nitropack'
 import type { TypeObject } from 'knitwork'
 import type { BuiltInProviderType } from '@auth/core/providers'
-import type { RuntimeConfig, NuxtApp } from '@nuxt/schema'
+import { type RuntimeConfig } from '@nuxt/schema'
+import type { NuxtApp } from 'nuxt/app'
 
 export type { NuxtApp, RuntimeConfig }
 
