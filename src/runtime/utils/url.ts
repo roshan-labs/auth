@@ -1,6 +1,6 @@
 import { joinURL } from 'ufo'
 
-import type { UseRuntimeConfigReturn } from '../types'
+import type { RuntimeConfig } from '../types'
 import { navigateTo, reloadNuxtApp, useRequestURL, useRuntimeConfig } from '#imports'
 
 /**
@@ -27,7 +27,7 @@ export const getRequestUrl = () => useRequestURL().href
  * @returns callback url
  */
 export const getDefaultCallbackUrl = <T extends string | Promise<string>>(
-  authConfig: UseRuntimeConfigReturn['public']['auth'],
+  authConfig: RuntimeConfig['public']['auth'],
   defaultCallback: () => T,
 ) => {
   const defaultCallbackUrl = authConfig.globalAppMiddleware.addDefaultCallbackUrl

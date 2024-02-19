@@ -1,7 +1,7 @@
 import type { DeepRequired } from 'ts-essentials'
 import { parseURL } from 'ufo'
 
-import type { AuthProvider, UseRuntimeConfigReturn, SupportedAuthProviders } from '../types'
+import type { AuthProvider, RuntimeConfig, SupportedAuthProviders } from '../types'
 
 /**
  * 判断 value 中是否有值包含在 permissions 数组中
@@ -86,7 +86,7 @@ export const getOriginAndPathnameFromURL = (url: string) => {
  * @returns type 类型策略配置
  */
 export const useTypedConfig = <T extends SupportedAuthProviders>(
-  runtimeConfig: UseRuntimeConfigReturn,
+  runtimeConfig: RuntimeConfig,
   _type: T,
 ): Extract<DeepRequired<AuthProvider>, { type: T }> => runtimeConfig.public.auth.provider as any
 

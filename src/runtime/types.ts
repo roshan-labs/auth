@@ -2,8 +2,9 @@ import type { RouterMethod } from 'h3'
 import type { $Fetch } from 'nitropack'
 import type { TypeObject } from 'knitwork'
 import type { BuiltInProviderType } from '@auth/core/providers'
+import type { RuntimeConfig, NuxtApp } from '@nuxt/schema'
 
-import { useNuxtApp, useRuntimeConfig } from '#imports'
+export type { NuxtApp, RuntimeConfig }
 
 /**
  * 用于枚举字符串类型支持任何其他的字符串参数
@@ -12,10 +13,6 @@ import { useNuxtApp, useRuntimeConfig } from '#imports'
  */
 // eslint-disable-next-line no-use-before-define
 export declare type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>)
-
-export type NuxtApp = ReturnType<typeof useNuxtApp>
-
-export type UseRuntimeConfigReturn = ReturnType<typeof useRuntimeConfig>
 
 /**
  * 客户端 session 配置

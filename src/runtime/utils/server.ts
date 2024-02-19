@@ -1,7 +1,7 @@
 import type { AuthConfig } from '@auth/core/types'
 import { type H3Event, getRequestURL, getRequestHeaders, readRawBody } from 'h3'
 
-import { useRuntimeConfig } from '#imports'
+import type { RuntimeConfig } from '../types'
 
 /**
  * 从 event 构造出标准 Request 对象
@@ -42,9 +42,9 @@ export const getAuthSecret = (options: AuthConfig) => {
  * @param event h3 event
  * @returns origin
  */
-export const getServerOrigin = (event: H3Event) => {
+export const getServerOrigin = (event: H3Event, runtimeConfig: RuntimeConfig) => {
   const requestOrigin = getRequestHeaders(event).origin
-  const serverOrigin = useRuntimeConfig().public.auth.params.origin as string | undefined
+  const serverOrigin = runtimeConfig.public.auth.params.origin as string | undefined
   const origin = requestOrigin ?? serverOrigin
 
   if (!origin) {

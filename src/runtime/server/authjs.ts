@@ -63,6 +63,6 @@ export const getServerToken = (event: H3Event, options: AuthConfig) => {
       headers: getRequestHeaders(event) as Record<string, string>,
     },
     secret: getAuthSecret(options),
-    secureCookie: getServerOrigin(event).startsWith('https://'),
+    secureCookie: getServerOrigin(event, useRuntimeConfig()).startsWith('https://'),
   })
 }

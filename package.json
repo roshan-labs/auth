@@ -57,7 +57,7 @@
     "ufo": "^1.4.0"
   },
   "devDependencies": {
-    "@auth/core": "0.26.3",
+    "@auth/core": "0.27.0",
     "@nuxt/devtools": "latest",
     "@nuxt/module-builder": "^0.5.5",
     "@nuxt/schema": "^3.10.1",
