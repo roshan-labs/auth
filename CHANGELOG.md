@@ -1,6 +1,23 @@
 # Changelog
 
 
+## v0.1.4
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.3...v0.1.4)
+
+### 🚀 Enhancements
+
+- 支持 Auth.js 策略及全部功能配置 ([a8b2a57](https://github.com/roshan-labs/auth/commit/a8b2a57))
+
+### 🏡 Chore
+
+- **release:** V0.1.3 ([ff95eb0](https://github.com/roshan-labs/auth/commit/ff95eb0))
+- 找不到 '#imports' 模块 ([0568044](https://github.com/roshan-labs/auth/commit/0568044))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.3
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.2...v0.1.3)
