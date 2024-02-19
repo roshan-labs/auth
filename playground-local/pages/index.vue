@@ -10,7 +10,7 @@
       <div>
         <button v-permission="'add'">Add</button>
         <button v-permission="'edit'">Edit</button>
-        <button v-cloak v-permission="'delete'">Delete</button>
+        <button v-permission="'delete'">Delete</button>
         <button v-permission="['no-permission']">Can't see me</button>
       </div>
       <h3>Sign out</h3>

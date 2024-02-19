@@ -1,8 +1,7 @@
 import type { DeepRequired } from 'ts-essentials'
 import { parseURL } from 'ufo'
 
-import type { AuthProvider, SupportedAuthProviders } from '../types'
-import { useRuntimeConfig } from '#imports'
+import type { AuthProvider, UseRuntimeConfigReturn, SupportedAuthProviders } from '../types'
 
 /**
  * 判断 value 中是否有值包含在 permissions 数组中
@@ -39,7 +38,7 @@ const pointerParse = (pointer: string) => {
  */
 export const jsonPointerGet = (
   target: Record<string, any>,
-  pointer: string
+  pointer: string,
 ): string | Record<string, any> => {
   const refTokens = pointerParse(pointer)
 
@@ -87,6 +86,15 @@ export const getOriginAndPathnameFromURL = (url: string) => {
  * @returns type 类型策略配置
  */
 export const useTypedConfig = <T extends SupportedAuthProviders>(
-  runtimeConfig: ReturnType<typeof useRuntimeConfig>,
-  _type: T
+  runtimeConfig: UseRuntimeConfigReturn,
+  _type: T,
 ): Extract<DeepRequired<AuthProvider>, { type: T }> => runtimeConfig.public.auth.provider as any
+
+/**
+ * 判断 value 是否为非空对象
+ *
+ * @param value 任意值
+ * @returns 布尔值
+ */
+export const isNonEmptyObject = (value: any) =>
+  Object.prototype.toString.call(value) === '[object Object]' && Object.keys(value).length > 0

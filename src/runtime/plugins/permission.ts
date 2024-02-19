@@ -17,7 +17,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { permissions } = usePermission()
 
   // 2. 注册 v-permission 指令
-  nuxtApp.vueApp.directive('permission', {
+  nuxtApp.vueApp.directive<HTMLElement, string | string[]>('permission', {
     mounted(el, binding) {
       const value = Array.isArray(binding.value) ? binding.value : [binding.value]
 
@@ -27,5 +27,5 @@ export default defineNuxtPlugin((nuxtApp) => {
         el.remove()
       }
     },
-  } satisfies DirectiveConfig)
+  })
 })

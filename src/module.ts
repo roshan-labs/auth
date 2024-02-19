@@ -17,9 +17,7 @@ import { getOriginAndPathnameFromURL } from './runtime/utils/helper'
 
 export type { ModuleOptions }
 
-const PACKAGE_NAME = '@roshan-labs/auth'
-
-const defaultOptions = {
+const defaultOptions: ModuleOptions = {
   isEnabled: true,
   session: {
     enableRefreshPeriodically: false,
@@ -28,9 +26,9 @@ const defaultOptions = {
   globalAppMiddleware: {
     isEnabled: false,
     allow404WithoutAuth: true,
-    addDefaultCallbackUrl: true,
+    addDefaultCallbackUrl: undefined,
   },
-} satisfies ModuleOptions
+}
 
 const defaultProvider: {
   [key in SupportedAuthProviders]: Extract<AuthProvider, { type: key }>
@@ -97,19 +95,26 @@ const defaultProvider: {
       permissionPointer: '/permission',
     },
   },
+  authjs: {
+    type: 'authjs',
+  },
 }
+
+const configKey = 'auth'
+
+const PACKAGE_NAME = '@roshan-labs/auth'
 
 export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: '@roshan-labs/auth',
-    configKey: 'auth',
+    configKey,
   },
   async setup(userOptions, nuxt) {
+    // 1. 合并用户配置与默认配置
     const logger = useLogger(PACKAGE_NAME)
 
-    // 1. 合并用户配置与默认配置
     const { origin, pathname = '/api/auth' } = getOriginAndPathnameFromURL(
-      userOptions.baseURL ?? ''
+      userOptions.baseURL ?? '',
     )
 
     const provider = userOptions.provider?.type ?? 'local'
@@ -134,34 +139,46 @@ export default defineNuxtModule<ModuleOptions>({
     logger.info(`${PACKAGE_NAME} setup starting`)
 
     // @ts-ignore
-    nuxt.options.runtimeConfig.public.auth = options
+    nuxt.options.runtimeConfig.public[configKey] = options
 
-    // 2. 添加 auth composable api
+    // 2. 添加 #auth 虚拟模块支持
     const { resolve } = createResolver(import.meta.url)
 
-    addImports([
-      { from: resolve(`./runtime/composables/${options.provider.type}/use-auth`), name: 'useAuth' },
-    ])
+    if (options.provider.type === 'authjs') {
+      nuxt.hook('nitro:config', (nitroConfig) => {
+        nitroConfig.alias = nitroConfig.alias || {}
+        nitroConfig.alias['#auth'] = resolve('./runtime/server/authjs')
+      })
+    }
 
-    // 3. 添加 auth 类型支持
-    const authTypeTemplate = addTypeTemplate({
+    // 添加类型支持
+    addTypeTemplate({
       filename: 'types/auth.d.ts',
       getContents: () =>
         [
           'declare module "#auth" {',
-          genInterface('SessionData', options.provider.sessionData.type),
+          options.provider.type === 'authjs'
+            ? [
+                `  const NuxtAuthHandler: typeof import('${resolve(
+                  './runtime/server/authjs',
+                )}').NuxtAuthHandler`,
+                `  const getServerSession: typeof import('${resolve('./runtime/server/authjs')}').getServerSession`,
+                `  const getServerToken: typeof import('${resolve('./runtime/server/authjs')}').getServerToken`,
+              ].join('\n')
+            : genInterface('SessionData', options.provider.sessionData.type),
           '}',
         ].join('\n'),
     })
 
-    nuxt.hook('prepare:types', (options) => {
-      options.references.push({ path: authTypeTemplate.dst })
-    })
+    // 3. 自动导入相关 composeable api
+    addImports([
+      { from: resolve(`./runtime/composables/${options.provider.type}/use-auth`), name: 'useAuth' },
+    ])
 
     // 4. 添加插件
     addPlugin(resolve('./runtime/plugins/auth'))
 
-    if (options.provider.permission.isEnabled) {
+    if (options.provider.type !== 'authjs' && options.provider.permission.isEnabled) {
       addPlugin(resolve('./runtime/plugins/permission'))
     }
 

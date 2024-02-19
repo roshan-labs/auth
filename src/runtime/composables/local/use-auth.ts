@@ -2,7 +2,7 @@ import { defu } from 'defu'
 
 import type { GetSession, SignIn, SignOut, SignUp } from '../../types'
 import { jsonPointerGet, useTypedConfig } from '../../utils/helper'
-import { useLogger } from '../use-logger'
+import { logger } from '../../utils/logger'
 import { useAuthFetch } from '../use-auth-fetch'
 import { useAuthState } from './use-auth-state'
 import type { SessionData } from '#auth'
@@ -32,7 +32,7 @@ const getSession: GetSession<SessionData | null | void> = async (getSessionOptio
     data.value = jsonPointerGet(response, config.sessionData.sessionPointer) as SessionData
   } catch (error) {
     // 获取 sessionData 出错需要重置登录状态
-    useLogger().error(error)
+    logger.error(error)
     data.value = null
     clearToken()
   }
@@ -71,12 +71,12 @@ const signIn: SignIn<Credentials, any> = async (credentials, signInOptions = {},
   const token = jsonPointerGet(response, config.token.signInResponseTokenPointer)
 
   if (typeof token !== 'string') {
-    useLogger().error(
+    logger.error(
       `Auth: string token expected, received instead: ${JSON.stringify(
-        token
+        token,
       )}. Tried to find token at ${config.token.signInResponseTokenPointer} in ${JSON.stringify(
-        response
-      )}`
+        response,
+      )}`,
     )
     return
   }

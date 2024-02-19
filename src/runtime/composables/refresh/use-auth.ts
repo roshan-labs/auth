@@ -3,7 +3,7 @@ import { defu } from 'defu'
 import type { Refresh } from '../../types'
 import { jsonPointerGet, useTypedConfig } from '../../utils/helper'
 import { useAuthFetch } from '../use-auth-fetch'
-import { useLogger } from '../use-logger'
+import { logger } from '../../utils/logger'
 import { useAuth as useLocalAuth } from '../local/use-auth'
 import { useAuthState } from './use-auth-state'
 import { navigateTo, useRuntimeConfig } from '#imports'
@@ -14,7 +14,7 @@ import { navigateTo, useRuntimeConfig } from '#imports'
 const signIn: ReturnType<typeof useLocalAuth>['signIn'] = async (
   credentials,
   signInOptions = {},
-  fetchOptions
+  fetchOptions,
 ) => {
   // 1. 获取 refresh 配置
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
@@ -28,12 +28,12 @@ const signIn: ReturnType<typeof useLocalAuth>['signIn'] = async (
   const expectedToken = jsonPointerGet(response, config.token.signInResponseTokenPointer)
 
   if (typeof expectedToken !== 'string') {
-    useLogger().error(
+    logger.error(
       `Auth: string token expected, received instead: ${JSON.stringify(
-        expectedToken
+        expectedToken,
       )}. Tried to find token at ${config.token.signInResponseTokenPointer} in ${JSON.stringify(
-        response
-      )}`
+        response,
+      )}`,
     )
     return
   }
@@ -41,16 +41,16 @@ const signIn: ReturnType<typeof useLocalAuth>['signIn'] = async (
   // 4. 获取 refreshToken
   const expectedRefreshToken = jsonPointerGet(
     response,
-    config.refreshToken.signInResponseRefreshTokenPointer
+    config.refreshToken.signInResponseRefreshTokenPointer,
   )
 
   if (typeof expectedRefreshToken !== 'string') {
-    useLogger().error(
+    logger.error(
       `Auth: string token expected, received instead: ${JSON.stringify(
-        expectedRefreshToken
+        expectedRefreshToken,
       )}. Tried to find token at ${
         config.refreshToken.signInResponseRefreshTokenPointer
-      } in ${JSON.stringify(response)}`
+      } in ${JSON.stringify(response)}`,
     )
     return
   }
@@ -76,7 +76,7 @@ const signIn: ReturnType<typeof useLocalAuth>['signIn'] = async (
  */
 const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
   signOutOptions = {},
-  fetchOptions
+  fetchOptions,
 ) => {
   // 1. 获取 signOut endpoint 配置
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
@@ -88,7 +88,7 @@ const signOut: ReturnType<typeof useLocalAuth>['signOut'] = async (
   if (signOutConfig) {
     const { path, method } = signOutConfig
     const headers = new Headers(
-      token.value ? { [config.token.headerName]: token.value } : undefined
+      token.value ? { [config.token.headerName]: token.value } : undefined,
     )
 
     response = await useAuthFetch(path, undefined, method, defu(fetchOptions, { headers }))
@@ -129,12 +129,12 @@ const refresh: Refresh<Record<string, any>> = async (credentials, fetchOptions) 
   const expectedToken = jsonPointerGet(response, config.token.signInResponseTokenPointer)
 
   if (typeof expectedToken !== 'string') {
-    useLogger().error(
+    logger.error(
       `Auth: string token expected, received instead: ${JSON.stringify(
-        expectedToken
+        expectedToken,
       )}. Tried to find token at ${config.token.signInResponseTokenPointer} in ${JSON.stringify(
-        response
-      )}`
+        response,
+      )}`,
     )
     return
   }
@@ -143,16 +143,16 @@ const refresh: Refresh<Record<string, any>> = async (credentials, fetchOptions) 
   if (!config.refreshOnlyToken) {
     const expectedRefreshToken = jsonPointerGet(
       response,
-      config.refreshToken.signInResponseRefreshTokenPointer
+      config.refreshToken.signInResponseRefreshTokenPointer,
     )
 
     if (typeof expectedRefreshToken !== 'string') {
-      useLogger().error(
+      logger.error(
         `Auth: string token expected, received instead: ${JSON.stringify(
-          expectedRefreshToken
+          expectedRefreshToken,
         )}. Tried to find token at ${
           config.refreshToken.signInResponseRefreshTokenPointer
-        } in ${JSON.stringify(response)}`
+        } in ${JSON.stringify(response)}`,
       )
       return
     } else {

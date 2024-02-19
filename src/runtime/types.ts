@@ -1,6 +1,21 @@
 import type { RouterMethod } from 'h3'
 import type { $Fetch } from 'nitropack'
 import type { TypeObject } from 'knitwork'
+import type { BuiltInProviderType } from '@auth/core/providers'
+
+import { useNuxtApp, useRuntimeConfig } from '#imports'
+
+/**
+ * 用于枚举字符串类型支持任何其他的字符串参数
+ *
+ * @example 'foo' | 'bar' -> 'foo' | 'bar' | string
+ */
+// eslint-disable-next-line no-use-before-define
+export declare type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>)
+
+export type NuxtApp = ReturnType<typeof useNuxtApp>
+
+export type UseRuntimeConfigReturn = ReturnType<typeof useRuntimeConfig>
 
 /**
  * 客户端 session 配置
@@ -42,13 +57,11 @@ type GlobalMiddlewareOptions = {
   allow404WithoutAuth?: boolean
   /**
    * 添加默认 callbackUrl
-   *
-   * @default true
    */
-  addDefaultCallbackUrl?: boolean | string
+  addDefaultCallbackUrl?: string
 }
 
-export type SupportedAuthProviders = 'local' | 'refresh'
+export type SupportedAuthProviders = 'local' | 'refresh' | 'authjs'
 
 /**
  * local 策略配置
@@ -222,7 +235,28 @@ type ProviderRefresh = Omit<ProviderLocal, 'type'> & {
   }
 }
 
-export type AuthProvider = ProviderLocal | ProviderRefresh
+export type SupportedProviders = LiteralUnion<BuiltInProviderType> | undefined
+
+/**
+ * authjs 策略配置
+ */
+type ProviderAuth = {
+  /**
+   * 策略类型
+   *
+   * @default 'authjs'
+   */
+  type: Extract<SupportedAuthProviders, 'authjs'>
+  /**
+   * signIn 未提供 provider 参数时的默认策略
+   *
+   * @example 'github'
+   * @default undefined
+   */
+  defaultProvider?: SupportedProviders
+}
+
+export type AuthProvider = ProviderLocal | ProviderRefresh | ProviderAuth
 
 export interface ModuleOptions {
   /**
@@ -263,6 +297,9 @@ type GetSessionOptions = {
   required?: boolean
   callbackUrl?: string
   external?: boolean
+  /**
+   * 获取 session 失败时的回调方法
+   */
   onUnauthenticated?: () => void
 }
 
@@ -270,9 +307,9 @@ export type GetSession<R> = (getSessionOptions?: GetSessionOptions) => Promise<R
 
 export type SessionStatus = 'unauthenticated' | 'loading' | 'authenticated'
 
-export type FetchOptions = Parameters<$Fetch>[1]
+export type FetchOptions = NonNullable<Parameters<$Fetch>[1]>
 
-type SignOptions = {
+export type SignOptions = {
   /**
    * 是否重定向
    */
@@ -287,12 +324,12 @@ type SignOptions = {
    * @default false
    */
   external?: boolean
-}
+} & Record<string, any>
 
 export type SignIn<P, R> = (
   primaryOptions: P,
   signInOptions?: SignOptions,
-  fetchOptions?: FetchOptions
+  fetchOptions?: FetchOptions,
 ) => Promise<R>
 
 export type SignUp<P, R> = SignIn<P, R>

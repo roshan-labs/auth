@@ -1,5 +1,7 @@
 import { checkPermission } from '../utils/helper'
+import { getDefaultCallbackUrl, navigateToAuthPage } from '../utils/url'
 import { usePermission } from '../composables/use-permission'
+import { signIn } from '../composables/authjs/use-auth'
 import { defineNuxtRouteMiddleware, navigateTo, useAuth, useRuntimeConfig } from '#imports'
 
 type MiddlewareMeta =
@@ -52,7 +54,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     return
   }
 
-  // 4. 判断是否登录用户访问
+  // 4. 判断用户是否登录或是否有权限
   const authConfig = useRuntimeConfig().public.auth
 
   if (status.value === 'authenticated') {
@@ -60,7 +62,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
       return navigateTo(authMeta.navigateAuthenticatedTo ?? '/')
     }
 
-    // 是否页面权限判断
+    // 如果有权限判断，则判断权限是否通过
     if (typeof authMeta?.permission !== 'undefined') {
       const { permissions } = usePermission()
       const permission =
@@ -75,7 +77,7 @@ export default defineNuxtRouteMiddleware((to, from) => {
     return
   }
 
-  // 5. 是否忽略 404 页面
+  // 5. to 的路由如果为 404 状态需要忽略跳转 sign in 页面
   if (
     authConfig.globalAppMiddleware.allow404WithoutAuth ||
     (typeof authConfig.globalAppMiddleware === 'boolean' && authConfig.globalAppMiddleware === true)
@@ -88,8 +90,12 @@ export default defineNuxtRouteMiddleware((to, from) => {
     }
   }
 
-  // 6. 不符合上述条件的最终处理方式
-  if (typeof authMeta === 'object' && authMeta.navigateUnauthenticatedTo) {
+  // 6. 最终处理方式
+  if (authConfig.provider.type === 'authjs') {
+    const callbackUrl = getDefaultCallbackUrl(authConfig, () => to.fullPath)
+
+    return signIn(undefined, { callbackUrl }) as ReturnType<typeof navigateToAuthPage>
+  } else if (typeof authMeta === 'object' && authMeta.navigateUnauthenticatedTo) {
     return navigateTo(authMeta.navigateUnauthenticatedTo)
   } else {
     // 需要考虑 from 与 login 路径相同的情况，会造成死循环

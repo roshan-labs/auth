@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   // 1. 校验传参
   const result = await readValidatedBody(
     event,
-    z.object({ username: z.string().min(1), password: z.literal('123') }).safeParse
+    z.object({ username: z.string().min(1), password: z.literal('123') }).safeParse,
   )
 
   // 2. 参数错误时响应

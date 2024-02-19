@@ -1,10 +1,10 @@
 import type { RouterMethod } from 'h3'
-import { joinURL } from 'ufo'
 import { defu } from 'defu'
 
 import type { FetchOptions } from '../types'
-import { useLogger } from './use-logger'
-import { useHttp, useRuntimeConfig } from '#imports'
+import { logger } from '../utils/logger'
+import { getAuthApiUrl } from '../utils/url'
+import { useHttp } from '#imports'
 
 /**
  * 结合 baseURL 发起请求
@@ -19,10 +19,9 @@ export const useAuthFetch = <R = any>(
   path: string,
   params: Record<string, any> | undefined,
   method: RouterMethod,
-  options?: FetchOptions
+  options?: FetchOptions,
 ): Promise<R> => {
-  const baseURL = useRuntimeConfig().public.auth.params.fullBaseURL
-  const url = joinURL(baseURL, path)
+  const url = getAuthApiUrl(path)
 
   try {
     // TODO: @roshan-labs/http 模块需要支持全部 RouterMethod 类型请求
@@ -31,10 +30,10 @@ export const useAuthFetch = <R = any>(
       params,
       defu(options, {
         baseURL: '',
-      })
+      }),
     )
   } catch (error) {
-    useLogger().error(error)
+    logger.error(error)
     throw new Error('Runtime fetch error, checkout log to debug')
   }
 }

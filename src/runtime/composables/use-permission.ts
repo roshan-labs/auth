@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 
 import { jsonPointerGet } from '../utils/helper'
-import { useLogger } from './use-logger'
+import { logger } from '../utils/logger'
 import { computed, useAuth, useRuntimeConfig } from '#imports'
 
 type UsePermissionReturn = {
@@ -20,8 +20,8 @@ export const usePermission = (): UsePermissionReturn => {
         return list
       }
 
-      useLogger().error(
-        `Permission: string array permission expected, received instead: ${JSON.stringify(list)}`
+      logger.error(
+        `Permission: string array permission expected, received instead: ${JSON.stringify(list)}`,
       )
     }
 
