@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.5
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.4...v0.1.5)
+
+### 🩹 Fixes
+
+- NuxtApp 类型错误 ([682a28b](https://github.com/roshan-labs/auth/commit/682a28b))
+
+### 🤖 CI
+
+- 去掉 test 部分 ([7ff9f5a](https://github.com/roshan-labs/auth/commit/7ff9f5a))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.4
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.3...v0.1.4)
