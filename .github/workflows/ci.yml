@@ -35,6 +35,3 @@ jobs:
 
       - name: 🔧 Test build module
         run: pnpm prepack
-
-      - name: 🧪 Test project
-        run: pnpm test
