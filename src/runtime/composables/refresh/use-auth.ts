@@ -6,7 +6,6 @@ import { useAuthFetch } from '../use-auth-fetch'
 import { logger } from '../../utils/logger'
 import { useAuth as useLocalAuth } from '../local/use-auth'
 import { useAuthState } from './use-auth-state'
-import type { SessionData } from '#auth'
 import { navigateTo, useRuntimeConfig } from '#imports'
 
 /**
