@@ -16,52 +16,22 @@ const getSession: ReturnType<typeof useLocalAuth>['getSession'] = async (
   getSessionOptions = {},
 ) => {
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
-  const { path, method } = config.endpoints.getSession
 
-  const { token, loading, data, refreshToken, lastRefreshedAt, clearToken } = useAuthState()
+  const { token, refreshToken, lastRefreshedAt } = useAuthState()
 
-  let authToken = token.value
-
-  if (!authToken && !getSessionOptions.force) {
-    if (refreshToken.value) {
+  if (!token.value && !getSessionOptions.force) {
+    return
+  }
+  if (token.value && refreshToken.value && lastRefreshedAt && lastRefreshedAt.value) {
+    const isTokenExpired =
+      new Date().getTime() - lastRefreshedAt.value.getTime() > config.token.maxAgeInSeconds * 1000
+    if (isTokenExpired) {
       await refresh({ refreshToken: refreshToken.value })
-      authToken = useAuthState().token.value
-    } else {
       return
     }
   }
-
-  const headers = new Headers(authToken ? { [config.token.headerName]: authToken } : undefined)
-
-  loading.value = true
-
-  try {
-    const response = await useAuthFetch<Record<string, any>>(path, undefined, method, { headers })
-
-    // 根据 JSON pointer 获取正确的 sessionData
-    data.value = jsonPointerGet(response, config.sessionData.sessionPointer) as SessionData
-  } catch (error) {
-    // 获取 sessionData 出错需要重置登录状态
-    logger.error(error)
-    data.value = null
-    clearToken()
-  }
-
-  loading.value = false
-  lastRefreshedAt.value = new Date()
-
-  // 获取用户信息失败后可以进行的操作
-  const { required = false, callbackUrl, external, onUnauthenticated } = getSessionOptions
-
-  if (required && data.value === null) {
-    if (onUnauthenticated) {
-      return onUnauthenticated()
-    } else {
-      await navigateTo(callbackUrl ?? '/', { external })
-    }
-  }
-
-  return data.value
+  const { getSession } = useLocalAuth()
+  return await getSession()
 }
 /**
  * 登录
