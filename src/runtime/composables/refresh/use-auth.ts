@@ -6,12 +6,15 @@ import { useAuthFetch } from '../use-auth-fetch'
 import { logger } from '../../utils/logger'
 import { useAuth as useLocalAuth } from '../local/use-auth'
 import { useAuthState } from './use-auth-state'
+import type { SessionData } from '#auth'
 import { navigateTo, useRuntimeConfig } from '#imports'
 
 /**
  * 请求用户权限数据
  */
-const getSession: ReturnType<typeof useLocalAuth>['getSession'] = async (getSessionOptions = {}) => {
+const getSession: ReturnType<typeof useLocalAuth>['getSession'] = async (
+  getSessionOptions = {},
+) => {
   const config = useTypedConfig(useRuntimeConfig(), 'refresh')
   const { path, method } = config.endpoints.getSession
 
@@ -21,14 +24,14 @@ const getSession: ReturnType<typeof useLocalAuth>['getSession'] = async (getSess
 
   if (!authToken && !getSessionOptions.force) {
     if (refreshToken.value) {
-      await refresh({refreshToken: refreshToken.value})
+      await refresh({ refreshToken: refreshToken.value })
       authToken = useAuthState().token.value
     } else {
       return
     }
   }
 
-  const headers = new Headers(token.value ? { [config.token.headerName]: authToken } : undefined)
+  const headers = new Headers(authToken ? { [config.token.headerName]: authToken } : undefined)
 
   loading.value = true
 
