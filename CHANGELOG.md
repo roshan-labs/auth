@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.6
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.5...v0.1.6)
+
+### 🚀 Enhancements
+
+- 增加authjs内部csrf验证 ([b815237](https://github.com/roshan-labs/auth/commit/b815237))
+
+### 🏡 Chore
+
+- 更新依赖 ([794b8a8](https://github.com/roshan-labs/auth/commit/794b8a8))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.5
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.4...v0.1.5)
