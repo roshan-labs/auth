@@ -111,6 +111,13 @@ export const signIn = async (
     return await nuxtApp.runWithContext(() => navigateToAuthPage(signInHref))
   }
 
+  // 4. 获取 csrf token
+  const { csrfToken } = await request<{ csrfToken: string }>(nuxtApp, '/csrf')
+
+  if (!csrfToken) {
+    throw new Error('CSRF token not found')
+  }
+
   // 4. 发起 signin 请求
   const isCredentials = selectedProvider.type === 'credentials'
   const isEmail = selectedProvider.type === 'email'
@@ -126,6 +133,7 @@ export const signIn = async (
   // @ts-ignore
   const params = new URLSearchParams({
     ...signInOptions,
+    csrfToken,
     callbackUrl,
   })
 
@@ -160,13 +168,19 @@ const signOut = async (options?: SignOutOptions) => {
   const requestUrl = getRequestUrl()
   const { redirect = true, callbackUrl = requestUrl } = options ?? {}
 
+  const { csrfToken } = await request<{ csrfToken: string }>(nuxtApp, '/csrf')
+
+  if (!csrfToken) {
+    throw new Error('CSRF token not found')
+  }
+
   const response = await request<{ url: string }>(nuxtApp, '/signout', {
     method: 'post',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
       'x-auth-return-redirect': '1',
     },
-    body: new URLSearchParams({ callbackUrl }),
+    body: new URLSearchParams({ csrfToken, callbackUrl }),
   })
 
   if (redirect) {
@@ -175,6 +189,7 @@ const signOut = async (options?: SignOutOptions) => {
   }
 
   await getSession()
+
   return response
 }
 

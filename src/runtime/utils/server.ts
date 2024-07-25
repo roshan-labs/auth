@@ -53,3 +53,13 @@ export const getServerOrigin = (event: H3Event, runtimeConfig: RuntimeConfig) =>
 
   return origin
 }
+
+/**
+ * 获取 request path，去除尾部 /
+ *
+ * @param req Request 请求
+ * @returns 格式化后的 request path
+ */
+export const getBasePath = (req: Request) => {
+  return req.url.replace(/\/$/, '')
+}

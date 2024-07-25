@@ -163,7 +163,6 @@ export default defineNuxtModule<ModuleOptions>({
                   './runtime/server/authjs',
                 )}').NuxtAuthHandler`,
                 `  const getServerSession: typeof import('${resolve('./runtime/server/authjs')}').getServerSession`,
-                `  const getServerToken: typeof import('${resolve('./runtime/server/authjs')}').getServerToken`,
               ].join('\n')
             : genInterface('SessionData', options.provider.sessionData.type),
           '}',

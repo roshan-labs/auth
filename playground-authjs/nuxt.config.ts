@@ -1,11 +1,17 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['../src/module'],
+
   auth: {
-    baseURL: 'http://localhost:3000/api/auth',
+    baseURL: '/api/auth',
     provider: {
       type: 'authjs',
     },
-    globalAppMiddleware: true,
+    globalAppMiddleware: {
+      allow404WithoutAuth: false,
+      isEnabled: true,
+    },
   },
+
+  compatibilityDate: '2024-07-25',
 })

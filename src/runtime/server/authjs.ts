@@ -1,10 +1,9 @@
 import type { AuthConfig, Session } from '@auth/core/types'
-import { Auth, skipCSRFCheck } from '@auth/core'
-import { getToken } from '@auth/core/jwt'
-import { type H3Event, defineEventHandler, getRequestHeaders, parseCookies } from 'h3'
+import { Auth, setEnvDefaults } from '@auth/core'
+import { type H3Event, defineEventHandler, getRequestHeaders } from 'h3'
 import { joinURL } from 'ufo'
 
-import { getAuthSecret, getServerOrigin, getWebRequest } from '../utils/server'
+import { getWebRequest } from '../utils/server'
 import { useRuntimeConfig } from '#imports'
 
 // Node.js 20 之后版本才有 globalThis.crypto，需要做兼容
@@ -20,16 +19,20 @@ if (!globalThis.crypto) {
 
 export const NuxtAuthHandler = (options: AuthConfig) => {
   return defineEventHandler(async (event) => {
+    // 忽略 sourcemap 文件
+    if (event.node.req.url?.includes('.js.map')) return
+    // 忽略 prerender 请求
+    if (event.node.req.headers?.['x-nitro-prerender'] && import.meta.env.NODE_ENV === 'prerender')
+      return
+
     const request = await getWebRequest(event)
 
     // 默认信任 host
     options.trustHost ??= true
-    // 已经实现 csrf 检查，忽略 authjs 内部检查
-    options.skipCSRFCheck = skipCSRFCheck
     // 设置 basePath
-    options.basePath = useRuntimeConfig().public.auth.params.pathname
+    options.basePath ??= useRuntimeConfig().public.auth.params.pathname
 
-    if (request.url.includes('.js.map')) return
+    setEnvDefaults(process.env, options)
 
     return await Auth(request, options)
   })
@@ -55,14 +58,14 @@ export const getServerSession = async (event: H3Event) => {
   }
 }
 
-export const getServerToken = (event: H3Event, options: AuthConfig) => {
-  return getToken({
-    req: {
-      // @ts-ignore
-      cookies: parseCookies(event),
-      headers: getRequestHeaders(event) as Record<string, string>,
-    },
-    secret: getAuthSecret(options),
-    secureCookie: getServerOrigin(event, useRuntimeConfig()).startsWith('https://'),
-  })
-}
+// export const getServerToken = (event: H3Event, options: AuthConfig) => {
+//   return getToken({
+//     req: {
+//       // @ts-ignore
+//       cookies: parseCookies(event),
+//       headers: getRequestHeaders(event) as Record<string, string>,
+//     },
+//     secret: getAuthSecret(options),
+//     secureCookie: getServerOrigin(event, useRuntimeConfig()).startsWith('https://'),
+//   })
+// }

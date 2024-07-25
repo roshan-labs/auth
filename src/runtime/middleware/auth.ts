@@ -78,6 +78,8 @@ export default defineNuxtRouteMiddleware((to, from) => {
   }
 
   // 5. to 的路由如果为 404 状态需要忽略跳转 sign in 页面
+  // 没有路由的项目去要设置 allow404WithoutAuth 为 false
+  // 不然这里会认为默认页面属于 404 导致无法触发认证
   if (
     authConfig.globalAppMiddleware.allow404WithoutAuth ||
     (typeof authConfig.globalAppMiddleware === 'boolean' && authConfig.globalAppMiddleware === true)
