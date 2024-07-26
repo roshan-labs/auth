@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.7
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.6...v0.1.7)
+
+### 🩹 Fixes
+
+- 无法生成ModuleOptions类型 ([3b2e718](https://github.com/roshan-labs/auth/commit/3b2e718))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.6
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.5...v0.1.6)
