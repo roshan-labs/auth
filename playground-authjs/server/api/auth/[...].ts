@@ -4,11 +4,11 @@ import type { AuthConfig } from '@auth/core/types'
 import { NuxtAuthHandler } from '#auth'
 
 export const options: AuthConfig = {
-  secret: '',
+  secret: process.env.AUTH_SECRET,
   providers: [
     GitHub({
-      clientId: '',
-      clientSecret: '',
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
   ],
   pages: {

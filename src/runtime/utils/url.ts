@@ -32,7 +32,7 @@ export const getDefaultCallbackUrl = <T extends string | Promise<string>>(
 ) => {
   const defaultCallbackUrl = authConfig.globalAppMiddleware.addDefaultCallbackUrl
 
-  if (typeof defaultCallbackUrl === 'string') {
+  if (typeof defaultCallbackUrl === 'string' && defaultCallbackUrl) {
     return defaultCallbackUrl
   }
 
