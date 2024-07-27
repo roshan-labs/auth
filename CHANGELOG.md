@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.10
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.9...v0.1.10)
+
+### 🩹 Fixes
+
+- Authjs模式callbackUrl会无限拼接 ([c9b9154](https://github.com/roshan-labs/auth/commit/c9b9154))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.9
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.8...v0.1.9)

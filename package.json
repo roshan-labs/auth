@@ -1,6 +1,6 @@
 {
   "name": "@roshan-labs/auth",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Nuxt3 auth module",
   "repository": "https://github.com/roshan-labs/auth",
   "license": "MIT",
