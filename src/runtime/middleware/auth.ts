@@ -33,6 +33,12 @@ declare module '#app' {
   }
 }
 
+declare module 'vue-router' {
+  interface RouteMeta {
+    auth?: MiddlewareMeta
+  }
+}
+
 export default defineNuxtRouteMiddleware((to, from) => {
   // 1. 获取 auth meta 配置并设置默认值
   const authMeta = to.meta.auth
