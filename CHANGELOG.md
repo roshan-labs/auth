@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.9
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.8...v0.1.9)
+
+### 🩹 Fixes
+
+- @auth/core依赖版本号错误 ([fb1f99f](https://github.com/roshan-labs/auth/commit/fb1f99f))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.8
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.7...v0.1.8)
