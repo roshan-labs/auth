@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.1.8
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.7...v0.1.8)
+
+### 🩹 Fixes
+
+- DefinePageMeta没有auth类型提示 ([dcedd89](https://github.com/roshan-labs/auth/commit/dcedd89))
+- PageMeta的middleware没有auth类型提示 ([c6dd247](https://github.com/roshan-labs/auth/commit/c6dd247))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.7
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.6...v0.1.7)
