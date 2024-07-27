@@ -17,6 +17,7 @@
       <button @click="signOut()">sign out</button>
     </div>
     {{ sessionData }}
+    <nuxt-page></nuxt-page>
   </div>
 </template>
 

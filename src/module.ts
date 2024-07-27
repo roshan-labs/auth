@@ -2,6 +2,7 @@ import type { DeepRequired } from 'ts-essentials'
 import {
   addImports,
   addPlugin,
+  addRouteMiddleware,
   addTypeTemplate,
   createResolver,
   defineNuxtModule,
@@ -174,14 +175,17 @@ export default defineNuxtModule<ModuleOptions>({
       { from: resolve(`./runtime/composables/${options.provider.type}/use-auth`), name: 'useAuth' },
     ])
 
-    // 4. 添加插件
+    // 4. 注册中间件
+    addRouteMiddleware({ name: 'auth', path: resolve('./runtime/middleware/auth') })
+
+    // 5. 添加插件
     addPlugin(resolve('./runtime/plugins/auth'))
 
     if (options.provider.type !== 'authjs' && options.provider.permission.isEnabled) {
       addPlugin(resolve('./runtime/plugins/permission'))
     }
 
-    // 5. 安装 @roshan-labs/http 模块用于发起鉴权相关请求
+    // 6. 安装 @roshan-labs/http 模块用于发起鉴权相关请求
     await installModule('@roshan-labs/http')
   },
 })
