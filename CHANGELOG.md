@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.12
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.11...v0.1.12)
+
+### 🚀 Enhancements
+
+- NuxtAuthHandler支持回调方法传参 ([6fda19e](https://github.com/roshan-labs/auth/commit/6fda19e))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.11
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.10...v0.1.11)
