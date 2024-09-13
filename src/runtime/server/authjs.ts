@@ -17,8 +17,15 @@ if (!globalThis.crypto) {
   })
 }
 
-export const NuxtAuthHandler = (options: AuthConfig) => {
+type DefineEventHandlerReturn = ReturnType<typeof defineEventHandler>
+type CallbackType = (event: H3Event) => AuthConfig | Promise<AuthConfig>
+
+export function NuxtAuthHandler(params: AuthConfig): DefineEventHandlerReturn
+export function NuxtAuthHandler(params: CallbackType): DefineEventHandlerReturn
+export function NuxtAuthHandler(params: AuthConfig | CallbackType) {
   return defineEventHandler(async (event) => {
+    const options = typeof params === 'function' ? await params(event) : params
+
     // 忽略 sourcemap 文件
     if (event.node.req.url?.includes('.js.map')) return
     // 忽略 prerender 请求

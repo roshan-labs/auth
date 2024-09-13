@@ -31,4 +31,6 @@ export const options: AuthConfig = {
   },
 }
 
-export default NuxtAuthHandler(options)
+export default NuxtAuthHandler(() => {
+  return options
+})
