@@ -11,7 +11,7 @@ import {
 } from '../../utils/url'
 import { request } from '../../utils/request'
 import { type SessionData, useAuthState } from './use-auth-state'
-import { useNuxtApp, useRequestHeaders, useRuntimeConfig } from '#imports'
+import { reloadNuxtApp, useNuxtApp, useRequestHeaders, useRuntimeConfig } from '#imports'
 
 /**
  * 获取设置的 provider 配置对象
@@ -142,6 +142,10 @@ export const signIn = async (
     method: 'post',
     body: params,
   })
+
+  if (isCredentials && !redirect) {
+    reloadNuxtApp({ persistState: true, force: true })
+  }
 
   if (redirect || !isSupportReturn) {
     const href = response.url ?? callbackUrl
