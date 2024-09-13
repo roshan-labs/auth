@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.11
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.10...v0.1.11)
+
+### 🩹 Fixes
+
+- Authjs模式下credentials登录需要刷新页面 ([0471a0b](https://github.com/roshan-labs/auth/commit/0471a0b))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.10
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.9...v0.1.10)
