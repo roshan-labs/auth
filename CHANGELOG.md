@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.15
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.14...v0.1.15)
+
+### 🚀 Enhancements
+
+- 不管是否错误都返回url用于判断错误类型 ([cb16c33](https://github.com/roshan-labs/auth/commit/cb16c33))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.14
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.13...v0.1.14)
