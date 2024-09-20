@@ -70,7 +70,7 @@ type SignInReturn = Promise<{
   error: string | null
   status: number
   ok: boolean
-  url: string | null
+  url: string
 } | void>
 
 export const signIn = async (
@@ -174,7 +174,7 @@ export const signIn = async (
     error,
     status: 200,
     ok: true,
-    url: error ? null : response.url,
+    url: response.url,
   }
 }
 
