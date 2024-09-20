@@ -27,6 +27,10 @@ const model = ref({
 })
 
 const login = async () => {
-  await signIn('credentials', { ...model.value, redirect: false })
+  const result = await signIn('credentials', { ...model.value, redirect: true })
+
+  if (result) {
+    console.log(result.error)
+  }
 }
 </script>

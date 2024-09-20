@@ -11,7 +11,13 @@ import {
 } from '../../utils/url'
 import { request } from '../../utils/request'
 import { type SessionData, useAuthState } from './use-auth-state'
-import { reloadNuxtApp, useNuxtApp, useRequestHeaders, useRuntimeConfig } from '#imports'
+import {
+  reloadNuxtApp,
+  useNuxtApp,
+  useRequestHeaders,
+  useRequestURL,
+  useRuntimeConfig,
+} from '#imports'
 
 /**
  * 获取设置的 provider 配置对象
@@ -60,12 +66,18 @@ const getSession: GetSession<SessionData | null> = async (options) => {
 }
 
 type SignInAuthorizationParams = string | string[][] | Record<string, string> | URLSearchParams
+type SignInReturn = Promise<{
+  error: string | null
+  status: number
+  ok: boolean
+  url: string | null
+} | void>
 
 export const signIn = async (
   provider?: SupportedProviders,
   signInOptions: SignOptions = {},
   authorizationParams?: SignInAuthorizationParams,
-) => {
+): SignInReturn => {
   const nuxtApp = useNuxtApp()
 
   // 1. 检查 NuxtAuthHandler providers 策略配置
@@ -90,8 +102,10 @@ export const signIn = async (
   let { callbackUrl } = signInOptions
 
   if (typeof callbackUrl === 'undefined') {
+    const requestCallbackUrl = useRequestURL().searchParams.get('callbackUrl') ?? ''
+
     callbackUrl = await nuxtApp.runWithContext(() =>
-      getDefaultCallbackUrl(useRuntimeConfig().public.auth, () => getRequestUrl()),
+      getDefaultCallbackUrl(useRuntimeConfig().public.auth, () => requestCallbackUrl),
     )
   }
 
@@ -143,8 +157,11 @@ export const signIn = async (
     body: params,
   })
 
-  if (isCredentials && !redirect) {
+  const error = new URL(response.url).searchParams.get('error')
+
+  if (!error && isCredentials && !redirect) {
     reloadNuxtApp({ persistState: true, force: true })
+    return
   }
 
   if (redirect || !isSupportReturn) {
@@ -152,9 +169,6 @@ export const signIn = async (
 
     return await nuxtApp.runWithContext(() => navigateToAuthPage(href))
   }
-
-  const error = new URL(response.url).searchParams.get('error')
-  await getSession()
 
   return {
     error,
@@ -165,8 +179,9 @@ export const signIn = async (
 }
 
 type SignOutOptions = Pick<SignOptions, 'redirect' | 'callbackUrl'>
+type SignOutReturn = Promise<{ url: string } | void>
 
-const signOut = async (options?: SignOutOptions) => {
+const signOut = async (options?: SignOutOptions): SignOutReturn => {
   const nuxtApp = useNuxtApp()
 
   const requestUrl = getRequestUrl()

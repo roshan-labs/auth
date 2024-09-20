@@ -22,7 +22,7 @@ export const options: AuthConfig = {
           }
         }
 
-        return null
+        throw new Error('用户名密码错误')
       },
     }),
   ],

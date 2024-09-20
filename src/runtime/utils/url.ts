@@ -9,8 +9,9 @@ import { navigateTo, reloadNuxtApp, useRequestURL, useRuntimeConfig } from '#imp
  * @param path 路径
  * @returns 完整的 auth url
  */
-export const getAuthApiUrl = (path: string) =>
-  joinURL(useRuntimeConfig().public.auth.params.fullBaseURL, path)
+export const getAuthApiUrl = (path: string) => {
+  return joinURL(useRuntimeConfig().public.auth.params.fullBaseURL, path)
+}
 
 /**
  * 获取当前请求的完整 url
