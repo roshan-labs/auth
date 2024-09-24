@@ -12,7 +12,6 @@ export type { NuxtApp, RuntimeConfig }
  *
  * @example 'foo' | 'bar' -> 'foo' | 'bar' | string
  */
-// eslint-disable-next-line no-use-before-define
 export declare type LiteralUnion<T extends U, U = string> = T | (U & Record<never, never>)
 
 /**

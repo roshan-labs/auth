@@ -1,4 +1,4 @@
-import type { AuthConfig, Session } from '@auth/core/types'
+import type { AuthConfig, Awaitable, Session } from '@auth/core/types'
 import { Auth, setEnvDefaults } from '@auth/core'
 import { type H3Event, defineEventHandler, getRequestHeaders } from 'h3'
 import { joinURL } from 'ufo'
@@ -17,11 +17,8 @@ if (!globalThis.crypto) {
   })
 }
 
-type DefineEventHandlerReturn = ReturnType<typeof defineEventHandler>
-type CallbackType = (event: H3Event) => AuthConfig | Promise<AuthConfig>
+type CallbackType = (event: H3Event) => Awaitable<AuthConfig>
 
-export function NuxtAuthHandler(params: AuthConfig): DefineEventHandlerReturn
-export function NuxtAuthHandler(params: CallbackType): DefineEventHandlerReturn
 export function NuxtAuthHandler(params: AuthConfig | CallbackType) {
   return defineEventHandler(async (event) => {
     const options = typeof params === 'function' ? await params(event) : params

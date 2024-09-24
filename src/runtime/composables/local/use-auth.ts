@@ -11,7 +11,7 @@ import { navigateTo, useRuntimeConfig } from '#imports'
 /**
  * 请求用户权限数据
  */
-const getSession: GetSession<SessionData | null | void> = async (getSessionOptions = {}) => {
+const getSession: GetSession<SessionData | null | undefined> = async (getSessionOptions = {}) => {
   const config = useTypedConfig(useRuntimeConfig(), 'local')
   const { path, method } = config.endpoints.getSession
 
@@ -45,7 +45,8 @@ const getSession: GetSession<SessionData | null | void> = async (getSessionOptio
 
   if (required && data.value === null) {
     if (onUnauthenticated) {
-      return onUnauthenticated()
+      onUnauthenticated()
+      return
     } else {
       await navigateTo(callbackUrl ?? '/', { external })
     }

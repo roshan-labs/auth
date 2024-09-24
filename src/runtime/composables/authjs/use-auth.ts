@@ -66,12 +66,15 @@ const getSession: GetSession<SessionData | null> = async (options) => {
 }
 
 type SignInAuthorizationParams = string | string[][] | Record<string, string> | URLSearchParams
-type SignInReturn = Promise<{
-  error: string | null
-  status: number
-  ok: boolean
-  url: string
-} | void>
+type SignInReturn = Promise<
+  | {
+      error: string | null
+      status: number
+      ok: boolean
+      url: string
+    }
+  | undefined
+>
 
 export const signIn = async (
   provider?: SupportedProviders,
@@ -115,14 +118,16 @@ export const signIn = async (
   const signInHref = `${signInUrl}${queryParams}`
 
   if (!provider) {
-    return await nuxtApp.runWithContext(() => navigateToAuthPage(signInHref))
+    await nuxtApp.runWithContext(() => navigateToAuthPage(signInHref))
+    return
   }
 
   // 未找到输入的 provider 配置也应该跳转到 authjs 默认登录选择页面
   const selectedProvider = providers[provider]
 
   if (!selectedProvider) {
-    return await nuxtApp.runWithContext(() => navigateToAuthPage(signInHref))
+    await nuxtApp.runWithContext(() => navigateToAuthPage(signInHref))
+    return
   }
 
   // 4. 获取 csrf token
@@ -144,7 +149,8 @@ export const signIn = async (
     'content-type': 'application/x-www-form-urlencoded',
     'x-auth-return-redirect': '1',
   })
-  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   const params = new URLSearchParams({
     ...signInOptions,
     csrfToken,
@@ -167,7 +173,8 @@ export const signIn = async (
   if (redirect || !isSupportReturn) {
     const href = response.url ?? callbackUrl
 
-    return await nuxtApp.runWithContext(() => navigateToAuthPage(href))
+    await nuxtApp.runWithContext(() => navigateToAuthPage(href))
+    return
   }
 
   return {
@@ -179,7 +186,7 @@ export const signIn = async (
 }
 
 type SignOutOptions = Pick<SignOptions, 'redirect' | 'callbackUrl'>
-type SignOutReturn = Promise<{ url: string } | void>
+type SignOutReturn = Promise<{ url: string } | undefined>
 
 const signOut = async (options?: SignOutOptions): SignOutReturn => {
   const nuxtApp = useNuxtApp()
@@ -204,7 +211,8 @@ const signOut = async (options?: SignOutOptions): SignOutReturn => {
 
   if (redirect) {
     const url = response.url ?? callbackUrl
-    return navigateToAuthPage(url)
+    await navigateToAuthPage(url)
+    return
   }
 
   await getSession()

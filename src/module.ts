@@ -139,6 +139,7 @@ export default defineNuxtModule<ModuleOptions>({
     // 把 options 设置到 runtimeConfig 方便 plugin、middleware、composable 使用
     logger.info(`${PACKAGE_NAME} setup starting`)
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     nuxt.options.runtimeConfig.public[configKey] = options
 

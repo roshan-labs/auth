@@ -1,5 +1,5 @@
 import { checkPermission } from '../utils/helper'
-import { getDefaultCallbackUrl, navigateToAuthPage } from '../utils/url'
+import { type navigateToAuthPage, getDefaultCallbackUrl } from '../utils/url'
 import { usePermission } from '../composables/use-permission'
 import { signIn } from '../composables/authjs/use-auth'
 import { defineNuxtRouteMiddleware, navigateTo, useAuth, useRuntimeConfig } from '#imports'
