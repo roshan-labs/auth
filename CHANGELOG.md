@@ -1,6 +1,19 @@
 # Changelog
 
 
+## v0.1.16
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.15...v0.1.16)
+
+### 🏡 Chore
+
+- 更新依赖 ([d83327d](https://github.com/roshan-labs/auth/commit/d83327d))
+- 对应新eslint规则修改代码 ([0242e5d](https://github.com/roshan-labs/auth/commit/0242e5d))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.15
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.14...v0.1.15)
