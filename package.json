@@ -48,7 +48,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@nuxt/kit": "^3.12.4",
+    "@nuxt/kit": "^3.13.2",
     "@roshan-labs/http": "^0.0.4",
     "defu": "^6.1.4",
     "h3": "^1.12.0",
@@ -57,20 +57,20 @@
     "ufo": "^1.5.4"
   },
   "devDependencies": {
-    "@auth/core": "^0.34.1",
-    "@nuxt/devtools": "^1.3.9",
+    "@auth/core": "^0.35.0",
+    "@nuxt/devtools": "^1.5.1",
     "@nuxt/module-builder": "^0.5.5",
-    "@nuxt/schema": "^3.12.4",
-    "@nuxt/test-utils": "^3.14.0",
+    "@nuxt/schema": "^3.13.2",
+    "@nuxt/test-utils": "^3.14.2",
     "@roshan-labs/eslint-config": "^1.4.1",
-    "@types/jsonwebtoken": "^9.0.6",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.14.12",
-    "changelogen": "^0.5.5",
+    "changelogen": "^0.5.7",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "jsonwebtoken": "^9.0.2",
-    "nuxt": "^3.12.4",
-    "ts-essentials": "^10.0.1",
+    "nuxt": "^3.13.2",
+    "ts-essentials": "^10.0.2",
     "vitest": "^2.0.4",
     "zod": "^3.23.8"
   },
