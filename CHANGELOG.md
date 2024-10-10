@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.17
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.16...v0.1.17)
+
+### 🩹 Fixes
+
+- UseAuth()返回data类型错误 ([3c06ea8](https://github.com/roshan-labs/auth/commit/3c06ea8))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.16
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.15...v0.1.16)
