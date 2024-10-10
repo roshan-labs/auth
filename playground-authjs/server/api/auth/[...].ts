@@ -1,10 +1,9 @@
-import type { AuthConfig } from '@auth/core/types'
 import GitHub from '@auth/core/providers/github'
 import Credentials from '@auth/core/providers/credentials'
 
 import { NuxtAuthHandler } from '#auth'
 
-export const options: AuthConfig = {
+export default NuxtAuthHandler({
   secret: process.env.AUTH_SECRET,
   providers: [
     GitHub({
@@ -29,8 +28,4 @@ export const options: AuthConfig = {
   pages: {
     signIn: '/sign-in',
   },
-}
-
-export default NuxtAuthHandler(() => {
-  return options
 })
