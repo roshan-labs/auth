@@ -9,6 +9,30 @@ import { useAuthState } from './use-auth-state'
 import { navigateTo, useRuntimeConfig } from '#imports'
 
 /**
+ * 请求用户权限数据
+ */
+const getSession: ReturnType<typeof useLocalAuth>['getSession'] = async (
+  getSessionOptions = {},
+) => {
+  const config = useTypedConfig(useRuntimeConfig(), 'refresh')
+
+  const { token, refreshToken, lastRefreshedAt } = useAuthState()
+
+  if (!token.value && !getSessionOptions.force) {
+    return
+  }
+  if (token.value && refreshToken.value && lastRefreshedAt && lastRefreshedAt.value) {
+    const isTokenExpired =
+      new Date().getTime() - lastRefreshedAt.value.getTime() > config.token.maxAgeInSeconds * 1000
+    if (isTokenExpired) {
+      await refresh({ refreshToken: refreshToken.value })
+      return
+    }
+  }
+  const { getSession } = useLocalAuth()
+  return await getSession()
+}
+/**
  * 登录
  */
 const signIn: ReturnType<typeof useLocalAuth>['signIn'] = async (
@@ -175,6 +199,7 @@ type UseAuthReturn = ReturnType<typeof useAuthState> &
 export const useAuth = (): UseAuthReturn => {
   const localAuth = useLocalAuth()
 
+  localAuth.getSession = getSession
   localAuth.signIn = signIn
   localAuth.signOut = signOut
 
