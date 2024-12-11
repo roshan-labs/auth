@@ -12,7 +12,7 @@ import {
 import { request } from '../../utils/request'
 import { type SessionData, useAuthState } from './use-auth-state'
 import {
-  reloadNuxtApp,
+  // reloadNuxtApp,
   useNuxtApp,
   useRequestHeaders,
   useRequestURL,
@@ -139,8 +139,8 @@ export const signIn = async (
 
   // 4. 发起 signin 请求
   const isCredentials = selectedProvider.type === 'credentials'
-  const isEmail = selectedProvider.type === 'email'
-  const isSupportReturn = isCredentials || isEmail
+  // const isEmail = selectedProvider.type === 'email'
+  // const isSupportReturn = isCredentials || isEmail
 
   // 准备请求相关参数
   const action = isCredentials ? 'callback' : 'signin'
@@ -165,12 +165,12 @@ export const signIn = async (
 
   const error = new URL(response.url).searchParams.get('error')
 
-  if (!error && isCredentials && !redirect) {
-    reloadNuxtApp({ persistState: true, force: true })
-    return
-  }
+  // if (!error && isCredentials && !redirect) {
+  //   reloadNuxtApp({ persistState: true, force: true })
+  //   return
+  // }
 
-  if (redirect || !isSupportReturn) {
+  if (redirect) {
     const href = response.url ?? callbackUrl
 
     await nuxtApp.runWithContext(() => navigateToAuthPage(href))

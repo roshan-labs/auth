@@ -309,6 +309,8 @@ export type FetchOptions = NonNullable<Parameters<$Fetch>[1]>
 export type SignOptions = {
   /**
    * 是否重定向
+   *
+   * @default true
    */
   redirect?: boolean
   /**
