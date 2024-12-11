@@ -1,6 +1,18 @@
 # Changelog
 
 
+## v0.1.18
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.17...v0.1.18)
+
+### 🩹 Fixes
+
+- Authjs策略下signIn现在由redirect属性控制是否重定向 ([aa362e7](https://github.com/roshan-labs/auth/commit/aa362e7))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.17
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.16...v0.1.17)
