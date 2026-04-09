@@ -1,6 +1,22 @@
 # Changelog
 
 
+## v0.1.20
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.19...v0.1.20)
+
+### 🚀 Enhancements
+
+- Local 策略的 signOut 调用之后会默认带上当前路由的 redirectUrl 参数 ([9ae9aa8](https://github.com/roshan-labs/auth/commit/9ae9aa8))
+
+### 🏡 Chore
+
+- Package.json 格式错误 ([d1a9fbe](https://github.com/roshan-labs/auth/commit/d1a9fbe))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.19
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.18...v0.1.19)

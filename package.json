@@ -1,6 +1,6 @@
 {
   "name": "@roshan-labs/auth",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "description": "Nuxt auth module",
   "repository": {
     "type": "git",
