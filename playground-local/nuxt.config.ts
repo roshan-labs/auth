@@ -1,9 +1,11 @@
 export default defineNuxtConfig({
   modules: ['../src/module'],
 
-  build: {
-    transpile: ['jsonwebtoken'],
-  },
+  // router: {
+  //   options: {
+  //     hashMode: true,
+  //   },
+  // },
 
   auth: {
     baseURL: '/api/auth',

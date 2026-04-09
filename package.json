@@ -36,7 +36,7 @@
     "dev:local": "nuxi dev playground-local",
     "dev:refresh": "nuxi dev playground-refresh",
     "dev:authjs": "nuxi dev playground-authjs",
-    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground-local && nuxi prepare playground-refresh && nuxi prepare playground-authjs",
+    "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground-local",
     "release": "npm run lint && npm run prepack && changelogen --release && npm publish && git push --follow-tags",
     "lint": "eslint .",
     "test": "vitest run",
