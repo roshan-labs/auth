@@ -15,6 +15,10 @@
       </div>
       <h3>Sign out</h3>
       <button @click="logout">Sign Out</button>
+      <h3>About Page</h3>
+      <nuxt-link to="/about">
+        <button>About</button>
+      </nuxt-link>
     </div>
   </div>
 </template>

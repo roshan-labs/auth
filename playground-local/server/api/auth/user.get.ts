@@ -1,4 +1,4 @@
-import { verify } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import { SECRET } from './login.post'
 
@@ -15,7 +15,7 @@ export default defineEventHandler((event) => {
   const [, token] = authorization.split('Bearer ')
 
   try {
-    const user = verify(token, SECRET)
+    const user = jwt.verify(token!, SECRET)
 
     return {
       user,

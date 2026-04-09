@@ -84,7 +84,7 @@ type Credentials = {
 } & Record<string, any>
 
 /**
- * 发起鉴权
+ * 登录
  */
 const signIn: SignIn<Credentials, any> = async (credentials, signInOptions = {}, fetchOptions) => {
   const nuxtApp = useNuxtApp()
@@ -175,7 +175,20 @@ const signOut: SignOut<any> = async (signOutOptions = {}, fetchOptions) => {
   const { redirect = true, callbackUrl, external } = signOutOptions
 
   if (redirect) {
-    await navigateTo(callbackUrl ?? config.pages.login, { external })
+    if (callbackUrl) {
+      await navigateTo(callbackUrl, { external, replace: true })
+    } else {
+      const route = useRoute()
+      const { redirectKey } = config
+
+      await navigateTo(
+        {
+          path: config.pages.login,
+          query: redirectKey ? { [redirectKey]: route.fullPath } : undefined,
+        },
+        { external, replace: true },
+      )
+    }
   }
 
   return response

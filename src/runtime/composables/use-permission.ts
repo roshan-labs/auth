@@ -10,11 +10,12 @@ type UsePermissionReturn = {
 
 export const usePermission = (): UsePermissionReturn => {
   const { data } = useAuth()
-  const { permissionPointer } = useRuntimeConfig().public.auth.provider.permission
+  const { getSessionResponsePermissionPointer } =
+    useRuntimeConfig().public.auth.provider.permissionData
 
   const permissions = computed(() => {
     if (data.value) {
-      const list = jsonPointerGet(data.value, permissionPointer) as string[]
+      const list = jsonPointerGet(data.value, getSessionResponsePermissionPointer) as string[]
 
       if (Array.isArray(list)) {
         return list

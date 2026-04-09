@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { sign } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 export const SECRET = 'roshan-labs'
 
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   // 3. 生成 token
   const authConfig = useRuntimeConfig(event).public.auth
 
-  const token = sign({ username: result.data.username }, SECRET, {
+  const token = jwt.sign({ username: result.data.username }, SECRET, {
     expiresIn: authConfig.provider.token.maxAgeInSeconds,
   })
 
