@@ -2,7 +2,10 @@
   "name": "@roshan-labs/auth",
   "version": "0.1.19",
   "description": "Nuxt auth module",
-  "repository": "https://github.com/roshan-labs/auth",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/roshan-labs/auth.git"
+  },
   "license": "MIT",
   "author": {
     "name": "Xiang Gao <gxmari007@gmail.com>"
