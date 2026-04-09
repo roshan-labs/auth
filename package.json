@@ -1,7 +1,7 @@
 {
   "name": "@roshan-labs/auth",
   "version": "0.1.18",
-  "description": "Nuxt3 auth module",
+  "description": "Nuxt auth module",
   "repository": "https://github.com/roshan-labs/auth",
   "license": "MIT",
   "author": {
@@ -10,13 +10,18 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
     }
   },
-  "main": "./dist/module.cjs",
-  "types": "./dist/types.d.ts",
+  "main": "./dist/module.mjs",
+  "typesVersions": {
+    "*": {
+      ".": [
+        "./dist/types.d.mts"
+      ]
+    }
+  },
   "files": [
     "dist"
   ],
