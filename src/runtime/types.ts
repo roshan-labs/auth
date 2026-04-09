@@ -5,6 +5,9 @@ import type { BuiltInProviderType } from '@auth/core/providers'
 import type { RuntimeConfig } from '@nuxt/schema'
 import type { NuxtApp } from 'nuxt/app'
 
+/** 请求方法类型 */
+type Method = NonNullable<NonNullable<Parameters<$Fetch>[1]>['method']>
+
 export type { NuxtApp, RuntimeConfig }
 
 /**
@@ -45,7 +48,7 @@ type GlobalMiddlewareOptions = {
    *
    * @default false
    */
-  isEnabled: boolean
+  enabled: boolean
   /**
    * 无登录状态 404 页面是否可访问
    *
@@ -58,7 +61,7 @@ type GlobalMiddlewareOptions = {
   addDefaultCallbackUrl?: string
 }
 
-export type SupportedAuthProviders = 'local' | 'refresh' | 'authjs'
+export type SupportedAuthProviders = 'local' | 'authjs'
 
 /**
  * local 策略配置
@@ -75,70 +78,76 @@ type ProviderLocal = {
    */
   endpoints?: {
     /**
-     * sign in api
+     * 登录 API 配置
      *
      * @default {path:'/login',method:'post'}
      */
-    signIn?: { path?: string; method?: RouterMethod }
+    signIn?: { path?: string; method?: Method }
     /**
-     * sign out api
+     * 登出 API 配置
      *
      * @default {path:'/logout',method:'post'}
      */
-    signOut?: { path?: string; method?: RouterMethod } | false
+    signOut?: { path?: string; method?: Method } | false
     /**
-     * sign up api
+     * 注册 API 配置
      *
      * @default {path:'/register',method:'post'}
      */
-    signUp?: { path?: string; method?: RouterMethod }
+    signUp?: { path?: string; method?: Method }
     /**
-     * 获取用户权限信息 API
+     * 获取用户权限信息 API 配置
      *
      * @default {path:'/session',method:'get'}
      */
-    getSession?: { path?: string; method?: RouterMethod }
+    getSession?: { path?: string; method?: Method }
+    /**
+     * 刷新 token API 配置
+     *
+     * @default {path:'/refresh',method:'post'}
+     */
+    refresh?: { path?: string; method?: Method }
   }
   /**
-   * 鉴权相关的重定向页面配置
+   * 鉴权相关页面配置
    */
   pages?: {
     /**
-     * 登录页
+     * 登录页面路径
      *
      * @default '/login'
      */
     login?: string
     /**
-     * 无权限提示页
+     * 无权限提示页面路径
      *
      * @default '/forbidden'
      */
     forbidden?: string
   }
   /**
-   * 配置从 signIn 获取的 token
+   * token 配置
    */
   token?: {
     /**
-     * 根据 JSON pointer 规则获取 token
+     * 获取 signIn 接口返回 token 的路径规则
      *
      * @example '/data/token' 会从 signIn 接口返回的 { data: { token: 'token_value' } } 获取到 token 值
      * @default '/token'
      */
     signInResponseTokenPointer?: string
     /**
-     * 设置 getSession 请求权限相关头名称
+     * getSession 请求头配置
      *
      * @default 'Authorization'
      */
     headerName?: string
     /**
-     * getSession 权限头类型
+     * getSession 请求头前缀
      *
      * @default 'Bearer'
      */
-    type?: string
+    prefix?: string
     /**
      * token 过期时长（秒）
      *
@@ -146,14 +155,14 @@ type ProviderLocal = {
      */
     maxAgeInSeconds?: number
     /**
-     * token cookie sameSite 配置
+     * token Cookie SameSite 配置
      *
      * @default 'lax'
      */
-    sameSiteAttribute?: boolean | 'lax' | 'strict' | 'none'
+    sameSiteAttribute?: boolean | CookieSameSite
   }
   /**
-   * getSession 获取用户数据配置
+   * session data 配置
    */
   sessionData?: {
     /**
@@ -163,30 +172,53 @@ type ProviderLocal = {
      */
     type?: TypeObject
     /**
-     * 根据 JSON pointer 规则获取 session data
+     * 获取 getSession 接口返回 session data 的路径规则
      *
      * @default ''
      */
-    sessionPointer?: string
+    getSessionResponsePointer?: string
   }
   /**
-   * 用户权限配置，更详细的页面与功能权限控制
+   * 用户权限配置
    */
-  permission?: {
+  permissionData?: {
     /**
      * 是否开启获取用户权限配置
      *
      * @example true 同步增加 v-permission 指令和 auth 中间件 permission 参数
      * @default false
      */
-    isEnabled: boolean
+    enabled: boolean
     /**
-     * 根据 JSON pointer 获取用户权限配置，需要搭配 sessionPointer 组合获取
+     * 获取 getSession 接口返回用户权限配置的路径规则
      *
      * @default '/permission'
      */
-    permissionPointer?: string
+    getSessionResponsePermissionPointer?: string
   }
+  /**
+   * 刷新 token 配置
+   */
+  refreshToken?: {
+    /**
+     * 根据 JSON pointer 规则获取 refreshToken 的路径
+     *
+     * @default '/refreshToken'
+     */
+    signInResponseRefreshTokenPointer?: string
+    /**
+     * refreshToken 过期时长（秒）
+     *
+     * @default 60 * 60 * 24 * 7
+     */
+    maxAgeInSeconds?: number
+  }
+  /**
+   * 重定向属性 key
+   *
+   * @default 'redirectUrl'
+   */
+  redirectKey?: string
 }
 
 /**
@@ -257,27 +289,27 @@ export type AuthProvider = ProviderLocal | ProviderRefresh | ProviderAuth
 
 export interface ModuleOptions {
   /**
-   * 模块是否禁用
+   * 是否启用模块
    *
    * @default true
    */
-  isEnabled?: boolean
+  enabled?: boolean
   /**
-   * API baseURL
+   * 鉴权 API baseURL
    *
    * @default '/api/auth'
    */
   baseURL?: string
   /**
-   * 鉴权策略配置
+   * 鉴权策略
    */
   provider?: AuthProvider
   /**
-   * 客户端 session 配置
+   * 浏览器 session 配置
    */
   session?: SessionConfig
   /**
-   * 公共路由中间件选项
+   * 鉴权路由中间件配置
    *
    * @example true
    * @example { allow404WithoutAuth: true }
@@ -305,6 +337,9 @@ export type GetSession<R> = (getSessionOptions?: GetSessionOptions) => Promise<R
 export type SessionStatus = 'unauthenticated' | 'loading' | 'authenticated'
 
 export type FetchOptions = NonNullable<Parameters<$Fetch>[1]>
+
+/** `request()` 第三参数；按 `options.method`（未写视为 GET）映射到 $fetch 的 `query` 或 `body` */
+export type RequestData = unknown
 
 export type SignOptions = {
   /**

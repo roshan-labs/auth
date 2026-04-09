@@ -1,6 +1,5 @@
 export default defineNuxtConfig({
   modules: ['../src/module'],
-  devtools: { enabled: true },
 
   build: {
     transpile: ['jsonwebtoken'],
@@ -17,9 +16,9 @@ export default defineNuxtConfig({
       pages: {
         login: '/login',
       },
-      permission: {
-        isEnabled: true,
-        permissionPointer: '/permission',
+      permissionData: {
+        enabled: true,
+        getSessionResponsePermissionPointer: '/permission',
       },
     },
     globalAppMiddleware: true,

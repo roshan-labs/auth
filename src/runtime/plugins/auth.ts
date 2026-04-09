@@ -2,8 +2,7 @@ import authMiddleware from '../middleware/auth'
 import { addRouteMiddleware, defineNuxtPlugin, useAuth, useRuntimeConfig } from '#imports'
 
 export default defineNuxtPlugin({
-  name: '@roshan-labs/auth',
-  enforce: 'pre',
+  name: 'auth',
   async setup(nuxtApp) {
     // 1. 初始化变量，调用 getSession 获取用户权限数据
     const config = useRuntimeConfig().public.auth
@@ -68,7 +67,7 @@ export default defineNuxtPlugin({
 
     if (
       (typeof globalAppMiddleware === 'boolean' && globalAppMiddleware === true) ||
-      globalAppMiddleware.isEnabled
+      globalAppMiddleware.enabled
     ) {
       addRouteMiddleware('auth', authMiddleware, { global: true })
     }

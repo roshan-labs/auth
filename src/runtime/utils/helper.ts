@@ -45,7 +45,7 @@ export const jsonPointerGet = (
   for (let index = 0; index < refTokens.length; index++) {
     const token = refTokens[index]
 
-    if (!(typeof target === 'object' && token in target)) {
+    if (!(typeof target === 'object' && token && token in target)) {
       throw new Error(`Invalid reference token: ${token}`)
     }
 

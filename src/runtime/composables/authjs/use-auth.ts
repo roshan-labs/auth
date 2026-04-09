@@ -43,11 +43,15 @@ const getSession: GetSession<SessionData | null> = async (options) => {
   loading.value = true
 
   try {
-    const response = await request(nuxtApp, '/session', {
-      headers,
-      method: 'get',
-      params: { callbackUrl: callbackUrl || callbackUrlFallback },
-    })
+    const response = await request(
+      nuxtApp,
+      '/session',
+      { callbackUrl: callbackUrl || callbackUrlFallback },
+      {
+        headers,
+        method: 'get',
+      },
+    )
 
     data.value = isNonEmptyObject(response) ? response : null
   } catch (error) {
@@ -157,10 +161,9 @@ export const signIn = async (
     callbackUrl,
   })
 
-  const response = await request<{ url: string }>(nuxtApp, url, {
+  const response = await request<{ url: string }>(nuxtApp, url, params, {
     headers,
     method: 'post',
-    body: params,
   })
 
   const error = new URL(response.url).searchParams.get('error')
@@ -200,14 +203,18 @@ const signOut = async (options?: SignOutOptions): SignOutReturn => {
     throw new Error('CSRF token not found')
   }
 
-  const response = await request<{ url: string }>(nuxtApp, '/signout', {
-    method: 'post',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      'x-auth-return-redirect': '1',
+  const response = await request<{ url: string }>(
+    nuxtApp,
+    '/signout',
+    new URLSearchParams({ csrfToken, callbackUrl }),
+    {
+      method: 'post',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'x-auth-return-redirect': '1',
+      },
     },
-    body: new URLSearchParams({ csrfToken, callbackUrl }),
-  })
+  )
 
   if (redirect) {
     const url = response.url ?? callbackUrl

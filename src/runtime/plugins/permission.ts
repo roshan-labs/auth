@@ -12,20 +12,23 @@ declare module 'vue' {
   }
 }
 
-export default defineNuxtPlugin((nuxtApp) => {
-  // 1. 从 sessionData 中获取用户权限数据
-  const { permissions } = usePermission()
+export default defineNuxtPlugin({
+  name: 'permission',
+  setup(nuxtApp) {
+    // 1. 从 sessionData 中获取用户权限数据
+    const { permissions } = usePermission()
 
-  // 2. 注册 v-permission 指令
-  nuxtApp.vueApp.directive<HTMLElement, string | string[]>('permission', {
-    mounted(el, binding) {
-      const value = Array.isArray(binding.value) ? binding.value : [binding.value]
+    // 2. 注册 v-permission 指令
+    nuxtApp.vueApp.directive<HTMLElement, string | string[]>('permission', {
+      mounted(el, binding) {
+        const value = Array.isArray(binding.value) ? binding.value : [binding.value]
 
-      const result = checkPermission(value, permissions.value)
+        const result = checkPermission(value, permissions.value)
 
-      if (!result) {
-        el.remove()
-      }
-    },
-  })
+        if (!result) {
+          el.remove()
+        }
+      },
+    })
+  },
 })

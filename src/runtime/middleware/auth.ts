@@ -106,9 +106,15 @@ export default defineNuxtRouteMiddleware((to, from) => {
   } else if (typeof authMeta === 'object' && authMeta.navigateUnauthenticatedTo) {
     return navigateTo(authMeta.navigateUnauthenticatedTo)
   } else {
+    const { redirectKey } = authConfig.provider
+
     // 需要考虑 from 与 login 路径相同的情况，会造成死循环
     return from.path === authConfig.provider.pages.login
       ? undefined
-      : navigateTo(authConfig.provider.pages.login)
+      : navigateTo({
+          path: authConfig.provider.pages.login,
+          query: redirectKey ? { [redirectKey]: to.fullPath } : undefined,
+          replace: true,
+        })
   }
 })

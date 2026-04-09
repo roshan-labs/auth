@@ -12,15 +12,15 @@ type UseAuthStateReturn = {
 } & ReturnType<typeof useCommonAuthState<SessionData>>
 
 export const useAuthState = (): UseAuthStateReturn => {
-  const config = useTypedConfig(useRuntimeConfig(), 'local')
+  const options = useTypedConfig(useRuntimeConfig(), 'local')
 
   const commonAuthState = useCommonAuthState<SessionData>()
 
   const _tokenCookie = useCookie<string | null>('auth:token', {
     default: () => null,
-    maxAge: config.token.maxAgeInSeconds,
-    sameSite: config.token.sameSiteAttribute,
-    secure: config.token.sameSiteAttribute === 'none',
+    maxAge: options.token.maxAgeInSeconds,
+    sameSite: options.token.sameSiteAttribute,
+    secure: options.token.sameSiteAttribute === 'none',
   })
 
   // useCookie 的更新机制会延迟
@@ -34,7 +34,9 @@ export const useAuthState = (): UseAuthStateReturn => {
 
   const token = computed(() => {
     if (rawToken.value === null) return null
-    return config.token.type.length > 0 ? `${config.token.type} ${rawToken.value}` : rawToken.value
+    return options.token.prefix.length > 0
+      ? `${options.token.prefix} ${rawToken.value}`
+      : rawToken.value
   })
 
   const setToken = (value: string | null) => {
