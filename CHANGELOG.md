@@ -1,6 +1,27 @@
 # Changelog
 
 
+## v0.1.19
+
+[compare changes](https://github.com/roshan-labs/auth/compare/v0.1.18...v0.1.19)
+
+### 🚀 Enhancements
+
+- Local 策略增加 redirectKey 判断回调地址获取参数 ([3302efa](https://github.com/roshan-labs/auth/commit/3302efa))
+
+### 🩹 Fixes
+
+- Authjs策略下signIn现在由redirect属性控制是否重定向 ([aa362e7](https://github.com/roshan-labs/auth/commit/aa362e7))
+- Package.json 字段错误导致打包失败 ([8a6b3ba](https://github.com/roshan-labs/auth/commit/8a6b3ba))
+
+### 🏡 Chore
+
+- **release:** V0.1.18 ([96e3636](https://github.com/roshan-labs/auth/commit/96e3636))
+
+### ❤️ Contributors
+
+- XiangGao <392041299@qq.com>
+
 ## v0.1.18
 
 [compare changes](https://github.com/roshan-labs/auth/compare/v0.1.17...v0.1.18)
